@@ -1,0 +1,1335 @@
+---
+title: "Panel Solar"
+date: "`r Sys.Date()`"
+output:
+  flexdashboard::flex_dashboard:
+    logo: www/logo.png
+    theme:
+      bg: '#191b1d'
+      fg: '#ebebeb'
+      primary: '#000000'
+      base_font:
+        google: Prompt
+      code_font:
+        google: JetBrains Mono
+      storyboard: yes
+    orientation: column
+    vertical_layout: fill
+   # source_code: embed
+    navbar:
+    - icon: "fa fa-university"
+      href: https://www.ingenieria.unam.mx/
+      align: right
+    - icon: "fa-github"
+      href: https://github.com/CFVFI/Panel-Solar
+      align: right
+
+runtime: shiny
+---
+```{r global, echo=FALSE, include=FALSE}
+pacman::p_load(tidyverse,flexdashboard,flextable,DT,shiny,rbokeh,echarts4r,lubridate,leaflet,plotly,knitr,data.table,tidymodels,modeltime,timetk,glmnet)
+###Corriente####
+Corriente <- read.csv("Data/files/Corriente.csv")
+Corriente$Fecha <- as.Date(Corriente$Fecha,format="%d/%m/%Y")
+CorrienteF <- read.csv("Data/files/CorrienteF.csv") 
+i1 <- select(Corriente,Fecha,I1,Ano,Month)
+i1$Entrada <- "I1"
+names(i1) <- c("Fecha","Corriente","Ano","Month","Entrada")
+
+i2 <- select(Corriente,Fecha,I2,Ano,Month)
+i2$Entrada <- "I2"
+names(i2) <- c("Fecha","Corriente","Ano","Month","Entrada")
+
+i3 <- select(Corriente,Fecha,I3,Ano,Month)
+i3$Entrada <- "I3"
+names(i3) <- c("Fecha","Corriente","Ano","Month","Entrada")
+
+t <- rbind(i1,i2,i3)
+####
+CorrienteM <- read.csv("Data/files/CorrienteM.csv")
+CorrienteM$Fecha <- as.Date(CorrienteM$Fecha,format="%d/%m/%Y")
+CorrienteFM <- read.csv("Data/files/CorrienteFM.csv")
+i1 <- select(CorrienteM,Fecha,I1,Ano,Month)
+i1$Entrada <- "I1"
+names(i1) <- c("Fecha","Corriente","Ano","Month","Entrada")
+
+i2 <- select(CorrienteM,Fecha,I2,Ano,Month)
+i2$Entrada <- "I2"
+names(i2) <- c("Fecha","Corriente","Ano","Month","Entrada")
+
+i3 <- select(CorrienteM,Fecha,I3,Ano,Month)
+i3$Entrada <- "I3"
+names(i3) <- c("Fecha","Corriente","Ano","Month","Entrada")
+
+tM <- rbind(i1,i2,i3)
+
+####
+datos_O <- read.csv("Data/files/datos.csv")
+
+###Potencia####
+Potencia <- read.csv("Data/files/Potencia.csv")
+Potencia$Fecha <- as.Date(Potencia$Fecha,format="%d/%m/%Y")
+PotenciaF <- read.csv("Data/files/PotenciaF.csv") 
+p1 <- select(Potencia,Fecha,P1,Ano,Month)
+p1$Entrada <- "P1"
+names(p1) <- c("Fecha","Potencia","Ano","Month","Entrada")
+
+p2 <- select(Potencia,Fecha,P2,Ano,Month)
+p2$Entrada <- "P2"
+names(p2) <- c("Fecha","Potencia","Ano","Month","Entrada")
+
+p3 <- select(Potencia,Fecha,P3,Ano,Month)
+p3$Entrada <- "P3"
+names(p3) <- c("Fecha","Potencia","Ano","Month","Entrada")
+
+p3 <- select(Potencia,Fecha,P3,Ano,Month)
+p3$Entrada <- "P3"
+names(p3) <- c("Fecha","Potencia","Ano","Month","Entrada")
+
+
+r <- rbind(p1,p2,p3)
+####
+PotenciaM <- read.csv("Data/files/PotenciaM.csv")
+PotenciaM$Fecha <- as.Date(PotenciaM$Fecha,format="%d/%m/%Y")
+PotenciaFM <- read.csv("Data/files/PotenciaFM.csv")
+p1 <- select(PotenciaM,Fecha,P1,Ano,Month)
+p1$Entrada <- "P1"
+names(p1) <- c("Fecha","Potencia","Ano","Month","Entrada")
+
+p2 <- select(PotenciaM,Fecha,P2,Ano,Month)
+p2$Entrada <- "P2"
+names(p2) <- c("Fecha","Potencia","Ano","Month","Entrada")
+
+p3 <- select(PotenciaM,Fecha,P3,Ano,Month)
+p3$Entrada <- "P3"
+names(p3) <- c("Fecha","Potencia","Ano","Month","Entrada")
+
+
+
+rM <- rbind(p1,p2,p3)
+
+####
+datos_OP <- read.csv("Data/files/datosC.csv")
+names(datos_OP) <- c('Fecha','Hora','P1','P2','P3','PT','Ano','Month')
+
+
+```
+Información {data-icon="fa-infinity"}
+=====================================
+Column 
+-------------------------------------
+### Mapa
+```{r}
+m <- leaflet() %>%
+  addTiles() %>%  # Añade por defecto los Tiles de  OpenStreetMap
+  addMarkers(lng=-99.181761, lat=19.327363,
+             popup="Panel Solar Anexo Facultad de Ingenieria")
+m  # Imprime el mapa
+```
+   
+Column {.tabset}
+-------------------------------------
+   
+### Historia
+Un calentador solar de agua usa la energía del sol para calentar un líquido, el cual transfiere el calor hacia un depósito acumulador de calor. Estos equipos pueden ser principalmente de dos tipos, los colectores solares, que son equipos donde el agua circula a través de ellos para su calentamiento, pero esta no es almacenada en el calentador solar. Muchas veces en estos sistemas se instala un tanque en el interior del hogar o industria para el almacenamiento del agua caliente. El otro tipo son los termo solares, también llamados calefones solares o termotanques solares. En estos equipos el agua también es almacenada para poder ser utilizada por ejemplo por la noche cuando no se dispone de la energía solar.Es una manera simple y efectiva de aprovechar la energía solar.
+
+
+```{r}
+```   
+ 
+### About us
+    
+```{r}
+```
+
+
+# Corriente Promedio {data-navmenu="Corriente" data-icon="fas fa-plug"}
+## Side Bar {.sidebar}
+**Corriente Promedio**
+```{r}
+ano <- rev(unique(Corriente$Ano))
+
+ selectInput("ano", label = "Seleccione el año:",
+            choices = ano, selected = ano[[1]])
+
+month <- rev(unique(Corriente$Month))
+selectInput("month", label = "Seleccione el mes:",
+            choices = month, selected = month[[12]])
+
+
+```
+**Los siguiente meses no se tienen mediciones:**
+
+- 2013: Marzo, Abril, Mayo, Julio, Octubre.
+
+- 2015: Julio.
+
+- 2016: Julio.
+
+- 2017: Junio, Julio, Agosto, Septiembre.
+
+- 2018: Febrero.
+
+- 2019: No sé porque.
+
+- 2020 y 2021: Por el COVID 19.
+
+- 2022: Noviembre, Diciembre.
+
+Column {data-width=400 data-height=300 .tabset}
+-----------------------------------------------------------------------
+### Gráfica
+
+```{r}
+renderPlot({
+ select_info <-  t %>% filter(Ano == input$ano, Month==input$month)
+
+  ggplot(select_info,aes(x=Fecha,y= Corriente,fill=Entrada,color=Entrada))+
+  geom_line(linewidth=1)+
+  labs(title = str_glue("Corriente Promedio de {input$month} {input$ano}"),
+       y= 'Amperios (A)')+
+  scale_color_manual(values =c("darkred", "steelblue","#0000CD"))+
+    theme_classic()+
+          theme(text = element_text(size = 20))
+
+})
+```
+
+
+### Datos
+```{r}
+renderDataTable({
+ datos <- CorrienteF %>% filter(Ano == input$ano, Month== input$month) %>%
+   select(Fecha,I1,I2,I3) 
+ datatable(datos,rownames = FALSE,
+    extensions = c('Buttons'),
+    options = list(
+      dom = 'Btip',
+      buttons = c('excel','csv','pdf','copy','print'),
+      scrollX = TRUE
+    ))
+})
+```
+### Datos Extras
+```{r}
+renderDataTable({
+ datos_F <- datos_O %>% filter(Month== input$month) %>% 
+   select("Fecha","Fecha","Hora","V1","V2","V3","I1","I2","I3")
+ datatable(datos_F,rownames = FALSE,
+    extensions = c('Buttons'),
+    options = list(
+      pageLength = 16,
+      dom = 'Btip',
+      buttons = c('excel','csv','pdf','copy','print'),
+      scrollX = TRUE
+    ))
+})
+```
+
+
+Column {data-width=150}
+-----------------------------------------------------------------------
+
+
+###
+
+```{r}
+renderPlot({
+ select_ano <- Corriente %>% filter(Ano == input$ano , Month== input$month)
+  ggplot(select_ano,aes(x=Fecha,y=I1))+
+  geom_line(linewidth=1,colour="darkred")+
+  labs(title = "Corriente Promedio de I1 ", subtitle= str_glue('{input$month} {input$ano}'))+
+  theme_classic()
+
+})
+```
+
+###
+
+```{r}
+
+renderPlot({
+ select_ano <- Corriente %>% filter(Ano == input$ano , Month== input$month)
+
+  ggplot(select_ano,aes(x=Fecha,y=I2))+
+  geom_line(linewidth=1,colour="steelblue")+
+  labs(title = "Corriente Promedio de I2 ", subtitle= str_glue('{input$month} {input$ano}'))+
+  theme_classic()
+
+})
+```
+###
+
+```{r}
+renderPlot({
+ select_ano <- Corriente %>% filter(Ano == input$ano , Month== input$month)
+
+  ggplot(select_ano,aes(x=Fecha,y=I3))+
+  geom_line(linewidth=1,colour="#0000CD")+
+  geom_point()+
+  labs(title = "Corriente Promedio de I3 ", subtitle= str_glue('{input$month} {input$ano}'))+
+  theme_classic()
+
+})
+```
+
+# Corriente Máxima {data-navmenu="Corriente" data-icon="fas fa-plug"}
+## Side Bar {.sidebar}
+<br> 
+**Corriente Máxima**
+```{r}
+anoM <- rev(unique(CorrienteM$Ano))
+
+selectInput("anoM", label = "Seleccione el año:",
+            choices = anoM, selected = anoM[[1]])
+
+monthM <- rev(unique(CorrienteM$Month))
+selectInput("monthM", label = "Seleccione el mes:",
+            choices = monthM, selected = monthM[[12]])
+
+
+```
+**Los siguiente meses no se tienen mediciones:**
+
+- 2013: Marzo, Abril, Mayo, Julio, Octubre.
+
+- 2015: Julio.
+
+- 2016: Julio.
+
+- 2017: Junio, Julio, Agosto, Septiembre.
+
+- 2018: Febrero.
+
+- 2019: No sé porque.
+
+- 2020 y 2021: Por el COVID 19.
+
+- 2022: Noviembre, Diciembre.
+
+Column {data-width=400 data-height=300 .tabset}
+-----------------------------------------------------------------------
+### Gráfica
+
+```{r}
+renderPlot({
+ select_infoM <- tM %>% filter(Ano == input$anoM, Month==input$monthM)
+
+  ggplot(select_infoM,aes(x=Fecha,y= Corriente,fill=Entrada,color=Entrada))+
+  geom_line(linewidth=1)+
+  labs(title = str_glue("Corriente Máxima de {input$monthM} {input$anoM}"),
+       y='Amperios (A)')+
+  scale_color_manual(values =c("darkred", "steelblue","#0000CD"))+
+    theme_classic()+
+          theme(text = element_text(size = 20))
+
+
+})
+```
+
+
+```{r}
+
+renderPlot({
+ select_anoM <- CorrienteM%>% filter(Ano == input$anoM , Month== input$monthM)
+
+ ggplot(select_anoM,aes(x=Fecha,y=I1))+
+  geom_line(linewidth=1,colour="darkred")+
+  labs(title = str_glue("Corriente de I1 mes de {input$monthM} en el año {input$anoM}"))+
+  theme_classic()
+
+})
+```
+### Datos
+```{r}
+renderDataTable({
+ datos <- CorrienteFM %>% filter(Ano == input$anoM, Month== input$monthM) %>%
+   select(Fecha,I1,I2,I3) 
+ datatable(datos,rownames = FALSE,
+    extensions = c('Buttons'),
+    options = list(
+      dom = 'Btip',
+      buttons = c('excel','csv','pdf','copy','print'),
+      scrollX = TRUE
+    ))
+})
+```
+
+
+
+
+### Datos Extras
+```{r}
+renderDataTable({
+ datos_FM <- datos_O %>% filter(Month== input$monthM) %>% 
+   select("Fecha","Fecha","Hora","V1","V2","V3","I1","I2","I3")
+ datatable(datos_FM,rownames = FALSE,
+    extensions = c('Buttons'),
+    options = list(
+      pageLength = 16,
+      dom = 'Btip',
+      buttons = c('excel','csv','pdf','copy','print'),
+      scrollX = TRUE
+    ))
+})
+```
+Column {data-width=150}
+-----------------------------------------------------------------------
+
+### 
+
+```{r}
+renderPlot({
+ select_anoM <- CorrienteM %>% filter(Ano == input$anoM , Month== input$monthM)
+  ggplot(select_anoM,aes(x=Fecha,y=I1))+
+  geom_line(linewidth=1,colour="darkred")+
+  labs(title = "Corriente Máxima de I1",subtitle= str_glue('{input$monthM} {input$anoM}'))+
+  theme_classic()
+
+})
+```
+
+### 
+
+```{r}
+
+renderPlot({
+ select_anoM <- CorrienteM %>% filter(Ano == input$anoM , Month== input$monthM)
+
+  ggplot(select_anoM,aes(x=Fecha,y=I2))+
+  geom_line(linewidth=1,colour="steelblue")+
+  labs(title = "Corriente Máxima de I2",subtitle= str_glue('{input$monthM} {input$anoM}'))+
+  theme_classic()
+
+})
+```
+### 
+
+```{r}
+renderPlot({
+ select_anoM <- CorrienteM %>% filter(Ano == input$anoM , Month== input$monthM)
+
+  ggplot(select_anoM,aes(x=Fecha,y=I3))+
+  geom_line(linewidth=1,colour="#0000CD")+
+  geom_point()+
+  labs(title = "Corriente Máxima de I3",subtitle= str_glue('{input$monthM} {input$anoM}'))+
+  theme_classic()
+
+})
+```
+
+# Predicción {data-navmenu="Corriente" data-icon="fas fa-plug"}
+## Side Bar {.sidebar}
+<br> 
+**Pronosctico Corriente**
+```{r}
+h <- c("1 month","2 months","3 months","4 months","5 months",
+       "6 months","7 months","8 months","9 months","10 months",
+       "11 months","12 months")
+
+selectInput("h", label = "Seleccione los meses de los que desea obtener un pronostico:",
+            choices = h, selected = h[[1]])
+Entrada <-c('I1','I2','I3')
+selectInput("Entrada", label = "Seleccione la Entrada :",
+            choices = Entrada, selected = Entrada[[1]])
+
+```
+En este apartado se toman los datos más recientes y se hace un pronostico que puede ir desde un mes hasta un año.
+
+
+Column {.tabset}
+-------------------------------------
+### Promedio
+```{r}
+renderPlot({
+  ##prediccion####
+In <- Corriente %>%
+  select(Fecha,input$Entrada) %>% 
+  filter(between(Fecha,'2022-05-12','2022-09-12')) %>% 
+  set_names(c("date", "value"))
+In$date <- as.Date(In$date,format="%d/%m/%Y")
+
+In %>% 
+  plot_time_series(date,value, .interactive=TRUE)
+
+splits <- In %>%
+  time_series_split(assess = "2 months",cumulative = TRUE)
+
+
+splits %>%
+  tk_time_series_cv_plan() %>%
+  plot_time_series_cv_plan(date, value, .interactive = FALSE)
+### Machine Learning Models###
+recipe_spec <- recipe(value ~ date, training(splits)) %>%
+  step_timeseries_signature(date) %>%
+  step_rm(contains("am.pm"), contains("hour"), contains("minute"),
+          contains("second"), contains("xts")) %>%
+  step_fourier(date, period = 365, K = 5) %>%
+  step_dummy(all_nominal())
+
+recipe_spec %>% prep() %>% juice()
+##Elastic Net###
+model_spec_glmnet <- linear_reg(penalty = 0.01, mixture = 0.5) %>%
+  set_engine("glmnet")
+
+workflow_fit_glmnet <- workflow() %>%
+  add_model(model_spec_glmnet) %>%
+  add_recipe(recipe_spec %>% step_rm(date)) %>%
+  fit(training(splits))
+
+##Modeltime Table###
+model_table <- modeltime_table(
+  workflow_fit_glmnet
+) 
+
+calibration_table <- model_table %>%
+  modeltime_calibrate(testing(splits))
+
+calibration_table %>%
+  modeltime_forecast(actual_data = In) %>%
+  plot_modeltime_forecast(.interactive = FALSE)
+
+
+calibration_table %>%
+  modeltime_accuracy() %>%
+  table_modeltime_accuracy(.interactive = FALSE)
+#####
+ ojo <- calibration_table %>%
+  # Remove ARIMA model with low accuracy
+  filter(.model_id == 1 ) %>%
+  
+  # Refit and Forecast Forward
+  modeltime_refit(In) %>%
+  modeltime_forecast(h = input$h, actual_data = In) %>%
+  plot_modeltime_forecast(.interactive = FALSE,.legend_show = F,
+                          .title=str_glue('Corriente Promedio de {input$Entrada} dentro de {input$h}'), .y_lab='Amperios (A)')
+ojo
+
+})
+```
+### Máxima
+```{r}
+renderPlot({
+  ##prediccion####
+InM <- CorrienteM %>%
+  select(Fecha,input$Entrada) %>% 
+  filter(between(Fecha,'2022-05-12','2022-09-12')) %>% 
+  set_names(c("date", "value"))
+InM$date <- as.Date(InM$date,format="%d/%m/%Y")
+
+InM %>% 
+  plot_time_series(date,value, .interactive=TRUE)
+
+splitsM <- InM %>%
+  time_series_split(assess = "2 months",cumulative = TRUE)
+
+
+splitsM %>%
+  tk_time_series_cv_plan() %>%
+  plot_time_series_cv_plan(date, value, .interactive = FALSE)
+
+### Machine Learning Models###
+recipe_specM <- recipe(value ~ date, training(splitsM)) %>%
+  step_timeseries_signature(date) %>%
+  step_rm(contains("am.pm"), contains("hour"), contains("minute"),
+          contains("second"), contains("xts")) %>%
+  step_fourier(date, period = 365, K = 5) %>%
+  step_dummy(all_nominal())
+
+recipe_specM %>% prep() %>% juice()
+##Elastic Net###
+model_spec_glmnetM <- linear_reg(penalty = 0.01, mixture = 0.5) %>%
+  set_engine("glmnet")
+
+workflow_fit_glmnetM <- workflow() %>%
+  add_model(model_spec_glmnetM) %>%
+  add_recipe(recipe_specM %>% step_rm(date)) %>%
+  fit(training(splitsM))
+
+
+##Modeltime Table###
+model_tableM <- modeltime_table(
+  workflow_fit_glmnetM
+)
+
+calibration_tableM <- model_tableM %>%
+  modeltime_calibrate(testing(splitsM))
+
+calibration_tableM %>%
+  modeltime_forecast(actual_data = InM) %>%
+  plot_modeltime_forecast(.interactive = FALSE)
+
+
+calibration_tableM %>%
+  modeltime_accuracy() %>%
+  table_modeltime_accuracy(.interactive = FALSE)
+#####
+ ojoM <- calibration_tableM %>%
+  # Remove ARIMA model with low accuracy
+  filter(.model_id == 1 ) %>%
+
+  # Refit and Forecast Forward
+  modeltime_refit(InM) %>%
+  modeltime_forecast(h = input$h, actual_data = InM) %>%
+  plot_modeltime_forecast(.interactive = FALSE,.legend_show = F,
+                          .title=str_glue('Corriente Máxima de {input$Entrada} dentro de {input$h}'), .y_lab='Ampererios (A)')
+ojoM
+
+})
+```
+
+ Column  {.tabset}
+-------------------------------------  
+### Promedio
+```{r}
+renderDataTable({
+  ##prediccion####
+In <- Corriente %>%
+  select(Fecha,input$Entrada) %>% 
+  filter(between(Fecha,'2022-05-12','2022-09-12')) %>% 
+  set_names(c("date", "value"))
+In$date <- as.Date(In$date,format="%d/%m/%Y")
+
+In %>% 
+  plot_time_series(date,value, .interactive=TRUE)
+
+splits <- In %>%
+  time_series_split(assess = "2 months",cumulative = TRUE)
+
+
+splits %>%
+  tk_time_series_cv_plan() %>%
+  plot_time_series_cv_plan(date, value, .interactive = FALSE)
+
+### Machine Learning Models###
+recipe_spec <- recipe(value ~ date, training(splits)) %>%
+  step_timeseries_signature(date) %>%
+  step_rm(contains("am.pm"), contains("hour"), contains("minute"),
+          contains("second"), contains("xts")) %>%
+  step_fourier(date, period = 365, K = 5) %>%
+  step_dummy(all_nominal())
+
+recipe_spec %>% prep() %>% juice()
+##Elastic Net###
+model_spec_glmnet <- linear_reg(penalty = 0.01, mixture = 0.5) %>%
+  set_engine("glmnet")
+
+workflow_fit_glmnet <- workflow() %>%
+  add_model(model_spec_glmnet) %>%
+  add_recipe(recipe_spec %>% step_rm(date)) %>%
+  fit(training(splits))
+
+##Modeltime Table###
+model_table <- modeltime_table(
+  workflow_fit_glmnet
+) 
+
+calibration_table <- model_table %>%
+  modeltime_calibrate(testing(splits))
+
+calibration_table %>%
+  modeltime_forecast(actual_data = In) %>%
+  plot_modeltime_forecast(.interactive = FALSE)
+
+
+calibration_table %>%
+  modeltime_accuracy() %>%
+  table_modeltime_accuracy(.interactive = FALSE)
+####
+ ojo <- calibration_table %>%
+  # Remove ARIMA model with low accuracy
+  filter(.model_id == 1 ) %>%
+  # Refit and Forecast Forward
+  modeltime_refit(In) %>%
+  modeltime_forecast(h = input$h, actual_data = In) %>%
+  plot_modeltime_forecast(.interactive = FALSE,.legend_show = F)
+
+datosP <- ojo$data %>% 
+  select(.index,.value,.conf_lo,.conf_hi)
+
+datatable(datosP,rownames = FALSE,caption = str_glue('Datos de la Corriente Promedio  de {input$Entrada} ' ),
+    extensions = c('Buttons'),
+    options = list(
+      pageLength = nrow(datosP),
+      dom = 'Btip',
+      buttons = c('excel','csv','pdf','copy','print'),
+      scrollX = TRUE
+    ))
+
+
+})
+```
+
+
+### Máxima
+```{r}
+renderDataTable({
+  ##prediccion####
+InM <- CorrienteM %>%
+  select(Fecha,input$Entrada) %>% 
+  filter(between(Fecha,'2022-05-12','2022-09-12')) %>% 
+  set_names(c("date", "value"))
+InM$date <- as.Date(InM$date,format="%d/%m/%Y")
+
+InM %>% 
+  plot_time_series(date,value, .interactive=TRUE)
+
+splitsM <- InM %>%
+  time_series_split(assess = "2 months",cumulative = TRUE)
+
+
+splitsM %>%
+  tk_time_series_cv_plan() %>%
+  plot_time_series_cv_plan(date, value, .interactive = FALSE)
+
+### Machine Learning Models###
+recipe_specM <- recipe(value ~ date, training(splitsM)) %>%
+  step_timeseries_signature(date) %>%
+  step_rm(contains("am.pm"), contains("hour"), contains("minute"),
+          contains("second"), contains("xts")) %>%
+  step_fourier(date, period = 365, K = 5) %>%
+  step_dummy(all_nominal())
+
+recipe_specM %>% prep() %>% juice()
+##Elastic Net###
+model_spec_glmnetM <- linear_reg(penalty = 0.01, mixture = 0.5) %>%
+  set_engine("glmnet")
+
+workflow_fit_glmnetM <- workflow() %>%
+  add_model(model_spec_glmnetM) %>%
+  add_recipe(recipe_specM %>% step_rm(date)) %>%
+  fit(training(splitsM))
+
+##Modeltime Table###
+model_tableM <- modeltime_table(
+  workflow_fit_glmnetM)
+
+calibration_tableM <- model_tableM %>%
+  modeltime_calibrate(testing(splitsM))
+
+calibration_tableM %>%
+  modeltime_forecast(actual_data = InM) %>%
+  plot_modeltime_forecast(.interactive = FALSE)
+
+
+calibration_tableM %>%
+  modeltime_accuracy() %>%
+  table_modeltime_accuracy(.interactive = FALSE)
+#####
+ ojoM <- calibration_tableM %>%
+  # Remove ARIMA model with low accuracy
+  filter(.model_id == 1 ) %>%
+
+  # Refit and Forecast Forward
+  modeltime_refit(InM) %>%
+  modeltime_forecast(h = input$h, actual_data = InM) %>%
+  plot_modeltime_forecast(.interactive = FALSE,.legend_show = F)
+
+datosP1 <- ojoM$data %>% 
+  select(.index,.value,.conf_lo,.conf_hi)
+
+datatable(datosP1,rownames = FALSE,caption = str_glue('Datos de la Corriente Máxima  de {input$Entrada} ' ),
+    extensions = c('Buttons'),
+    options = list(
+      pageLength = nrow(datosP1),
+      dom = 'Btip',
+      buttons = c('excel','csv','pdf','copy','print'),
+      scrollX = TRUE
+    ))
+
+})
+```
+
+# Potencia Promedio {data-navmenu="Potencia" data-icon="fas fa-industry"}
+## Side Bar {.sidebar}
+<br> 
+**Potencia Promedio**
+```{r}
+anoP <- rev(unique(Potencia$Ano))
+
+
+
+selectInput("anoP", label = "Seleccione el año:",
+             choices = anoP, selected = anoP[[1]])
+
+monthP <- rev(unique(Potencia$Month))
+ selectInput("monthP", label = "Seleccione el mes:",
+             choices = monthP, selected = monthP)
+
+
+```
+**Los siguiente meses no se tienen mediciones:**
+
+- 2022: Marzo,Noviembre, Diciembre.
+
+Column {data-width=400 data-height=300 .tabset}
+-----------------------------------------------------------------------
+### Gráfica
+
+```{r}
+renderPlot({
+ select_infoP <-  r %>% filter(Ano == input$anoP, Month==input$monthP)
+
+  ggplot(select_infoP,aes(x=Fecha,y= Potencia,fill=Entrada,color=Entrada))+
+  geom_line(linewidth=1)+
+  labs(title = str_glue("Potencia Promedio {input$monthP} {input$anoP}"), y= 'Watts (W)')+
+  scale_color_manual(values =c("darkred", "steelblue","#0000CD"))+
+    theme_classic()+
+      theme(text = element_text(size = 20))
+
+
+})
+```
+
+### Gráfica Potencia Total
+
+```{r}
+renderPlot({
+ select_infoP <-  Potencia %>% filter(Ano == input$anoP, Month==input$monthP) 
+
+ggplot(select_infoP,aes(x=Fecha,y= PT))+
+  geom_line(linewidth=1,color="#87B560")+
+  labs(title = str_glue("Potencia Promedio Total {input$monthP} {input$anoP}"), y= 'Watts (W)')+
+  theme_classic()+
+  theme(legend.position = "none",text = element_text(size = 20))   
+
+})
+```
+
+### Datos
+```{r}
+renderDataTable({
+ datosP <- PotenciaF %>% filter(Ano == input$anoP, Month== input$monthP) %>%
+   select(Fecha,P1,P2,P3,PT) 
+ datatable(datosP,rownames = FALSE,
+    extensions = c('Buttons'),
+    options = list(
+      dom = 'Btip',
+      buttons = c('excel','csv','pdf','copy','print'),
+      scrollX = TRUE
+    ))
+})
+```
+### Datos Extras
+```{r}
+renderDataTable({
+ datos_FP <- datos_OP %>% filter(Month == input$monthP) %>% 
+  select("Fecha","Hora","P1","P2","P3","PT")
+datatable(datos_FP,rownames = FALSE,
+          extensions = c('Buttons'),
+          options = list(
+            pageLength = 16,
+            dom = 'Btip',
+            buttons = c('excel','csv','pdf','copy','print'),
+            scrollX = TRUE
+          )) 
+})
+```
+
+
+Column {data-width=150}
+-----------------------------------------------------------------------
+
+
+###
+
+```{r}
+renderPlot({
+ select_anoP <- Potencia %>% filter(Ano == input$anoP , Month== input$monthP)
+  ggplot(select_anoP,aes(x=Fecha,y=P1))+
+  geom_line(linewidth=1,colour="darkred")+
+  labs(title = "Potencia Promedio de P1", subtitle=  str_glue("{input$monthP} {input$anoP}"), y= 'Watts (W)')+
+  theme_classic()
+
+})
+```
+
+###
+
+```{r}
+
+renderPlot({
+ select_anoP <- Potencia %>% filter(Ano == input$anoP , Month== input$monthP)
+
+  ggplot(select_anoP,aes(x=Fecha,y=P2))+
+  geom_line(linewidth=1,colour="steelblue")+
+  labs(title = "Potencia Promedio de P2", subtitle=  str_glue("{input$monthP} {input$anoP}"), y= 'Watts (W)')+
+  theme_classic()
+
+})
+```
+### 
+
+```{r}
+renderPlot({
+ select_anoP <- Potencia %>% filter(Ano == input$anoP , Month== input$monthP)
+
+  ggplot(select_anoP,aes(x=Fecha,y=P3))+
+  geom_line(linewidth=1,colour="#0000CD")+
+  geom_point()+
+  labs(title = "Potencia Promedio de P3", subtitle=  str_glue("{input$monthP} {input$anoP}"), y= 'Watts (W)')+
+  theme_classic()
+
+})
+```
+
+
+
+
+# Potencia Máxima {data-navmenu="Potencia" data-icon="fas fa-industry"}
+## Side Bar {.sidebar}
+<br> 
+**Potencia Máxima**
+```{r}
+anoMP <- rev(unique(PotenciaM$Ano))
+
+selectInput("anoMP", label = "Seleccione el año:",
+            choices = anoMP, selected = anoMP[[1]])
+
+monthMP <- rev(unique(PotenciaM$Month))
+selectInput("monthMP", label = "Seleccione el mes:",
+            choices = monthMP, selected = monthMP)
+
+
+```
+**Los siguiente meses no se tienen mediciones:**
+
+
+- 2022: Marzo,Noviembre, Diciembre.
+
+Column {data-width=400 data-height=300 .tabset}
+-----------------------------------------------------------------------
+### Gráfica
+
+```{r}
+renderPlot({
+ select_infoMP <- rM %>% filter(Ano == input$anoMP, Month==input$monthMP)
+
+  ggplot(select_infoMP,aes(x=Fecha,y= Potencia,fill=Entrada,color=Entrada))+
+  geom_line(linewidth=1)+
+  labs(title = str_glue("Potencia Máxima {input$monthMP} {input$anoMP}"), y= 'Watts (W)')+
+  scale_color_manual(values =c("darkred", "steelblue","#0000CD"))+
+    theme_classic()+
+  theme(text = element_text(size = 20))
+    
+
+})
+```
+
+
+### Gráfica Potencia Total
+
+```{r}
+renderPlot({
+ select_infoPM <-  PotenciaM %>% filter(Ano == input$anoMP, Month==input$monthMP) 
+
+ggplot(select_infoPM,aes(x=Fecha,y= PT))+
+  geom_line(linewidth=1,color="#87B560")+
+  labs(title = str_glue("Potencia Máxima Total {input$monthMP} {input$anoMP}"), y= 'Watts (W)')+
+  theme_classic()+
+  theme(legend.position = "none",text = element_text(size = 20))   
+
+})
+```
+### Datos
+```{r}
+renderDataTable({
+ datosPM <- PotenciaFM %>% filter(Ano == input$anoMP, Month== input$monthMP) %>%
+   select(Fecha,P1,P2,P3,PT) 
+ datatable(datosPM,rownames = FALSE,
+    extensions = c('Buttons'),
+    options = list(
+      dom = 'Btip',
+      buttons = c('excel','csv','pdf','copy','print'),
+      scrollX = TRUE
+    ))
+})
+```
+
+
+
+
+### Datos Extras
+```{r}
+renderDataTable({
+ datos_FMP <- datos_OP %>% filter(Month== input$monthMP) %>% 
+   select("Fecha","Fecha","Hora","P1","P2","P3","PT")
+ datatable(datos_FMP,rownames = FALSE,
+    extensions = c('Buttons'),
+    options = list(
+      pageLength = 16,
+      dom = 'Btip',
+      buttons = c('excel','csv','pdf','copy','print'),
+      scrollX = TRUE
+    ))
+})
+```
+Column {data-width=150}
+-----------------------------------------------------------------------
+
+### 
+
+```{r}
+renderPlot({
+ select_anoMP <- PotenciaM %>% filter(Ano == input$anoMP , Month== input$monthMP)
+  ggplot(select_anoMP,aes(x=Fecha,y=P1))+
+  geom_line(linewidth=1,colour="darkred")+
+  labs(title = "Potencia Máxima de P1", subtitle=  str_glue("{input$monthMP} {input$anoMP}"), y= 'Watts (W)')+
+  theme_classic()
+
+})
+```
+
+###
+
+```{r}
+
+renderPlot({
+ select_anoMP <- PotenciaM %>% filter(Ano == input$anoMP , Month== input$monthMP)
+
+  ggplot(select_anoMP,aes(x=Fecha,y=P2))+
+  geom_line(linewidth=1,colour="steelblue")+
+  labs(title = "Potencia Máxima de P2", subtitle=  str_glue("{input$monthMP} {input$anoMP}"), y= 'Watts (W)' )+
+  theme_classic()
+
+})
+```
+###
+
+```{r}
+renderPlot({
+ select_anoMP <- PotenciaM %>% filter(Ano == input$anoMP , Month== input$monthMP)
+
+  ggplot(select_anoMP,aes(x=Fecha,y=P3))+
+  geom_line(linewidth=1,colour="#0000CD")+
+  labs(title = "Potencia Máxima de P3", subtitle=  str_glue("{input$monthMP} {input$anoMP}"), y= 'Watts (W)')+
+  theme_classic()
+
+})
+```
+
+# Predicción {data-navmenu="Potencia" data-icon="fas fa-industry"}
+## Side Bar {.sidebar}
+<br> 
+**Pronostico Potencia**
+```{r}
+hP <- c("1 month","2 months","3 months","4 months","5 months",
+       "6 months","7 months","8 months","9 months","10 months",
+       "11 months","12 months")
+
+selectInput("hP", label = "Seleccione los meses de los que desea obtener un pronostico:",
+            choices = hP, selected = hP[[1]])
+EntradaP <-c( "P1"  ,  "P2" ,   "P3", "PT"  )
+selectInput("EntradaP", label = "Seleccione la Entrada :",
+            choices = EntradaP, selected = EntradaP[[1]])
+
+
+```
+En este apartado se toman los datos más recientes y se hace un pronostico que puede ir desde un mes hasta un año.
+
+
+Column {.tabset}
+-------------------------------------
+### Promedio
+```{r}
+renderPlot({
+  ##prediccion####
+Pn <- Potencia %>%
+  select(Fecha,input$EntradaP) %>% 
+  filter(between(Fecha,'2022-05-31','2022-09-12')) %>% 
+  set_names(c("date", "value"))
+Pn$date <- as.Date(Pn$date,format="%d/%m/%Y")
+
+Pn %>% 
+  plot_time_series(date,value, .interactive=TRUE)
+
+splitsP <- Pn %>%
+  time_series_split(assess = "2 months",cumulative = TRUE)
+
+
+splitsP %>%
+  tk_time_series_cv_plan() %>%
+  plot_time_series_cv_plan(date, value, .interactive = FALSE)
+### Machine Learning Models###
+recipe_specP <- recipe(value ~ date, training(splitsP)) %>%
+  step_timeseries_signature(date) %>%
+  step_rm(contains("am.pm"), contains("hour"), contains("minute"),
+          contains("second"), contains("xts")) %>%
+  step_fourier(date, period = 365, K = 5) %>%
+  step_dummy(all_nominal())
+
+recipe_specP %>% prep() %>% juice()
+##Elastic Net###
+model_spec_glmnetP <- linear_reg(penalty = 0.01, mixture = 0.5) %>%
+  set_engine("glmnet")
+
+workflow_fit_glmnetP <- workflow() %>%
+  add_model(model_spec_glmnetP) %>%
+  add_recipe(recipe_specP %>% step_rm(date)) %>%
+  fit(training(splitsP))
+
+##Modeltime Table###
+model_tableP <- modeltime_table(
+  workflow_fit_glmnetP
+)
+
+calibration_tableP <- model_tableP %>%
+  modeltime_calibrate(testing(splitsP))
+
+calibration_tableP %>%
+  modeltime_forecast(actual_data =Pn) %>%
+  plot_modeltime_forecast(.interactive = FALSE)
+
+
+calibration_tableP %>%
+  modeltime_accuracy() %>%
+  table_modeltime_accuracy(.interactive = FALSE)
+#####
+ ojoP <- calibration_tableP %>%
+  # Remove ARIMA model with low accuracy
+  filter(.model_id == 1 ) %>%
+
+  # Refit and Forecast Forward
+  modeltime_refit(Pn) %>%
+  modeltime_forecast(h = input$hP, actual_data = Pn) %>%
+  plot_modeltime_forecast(.interactive = FALSE,.legend_show = F,
+                          .title=str_glue('Potencia Promedio de {input$EntradaP} dentro de {input$hP}'), .y_lab='Amperios (A)')
+ojoP
+
+})
+```
+### Máxima
+```{r}
+renderPlot({
+  ##prediccion####
+PnM <- PotenciaM %>%
+  select(Fecha,input$EntradaP) %>% 
+  filter(between(Fecha,'2022-05-31','2022-09-12')) %>% 
+  set_names(c("date", "value"))
+PnM$date <- as.Date(PnM$date,format="%d/%m/%Y")
+
+PnM %>% 
+  plot_time_series(date,value, .interactive=TRUE)
+
+splitsPM <- PnM %>%
+  time_series_split(assess = "2 months",cumulative = TRUE)
+
+
+splitsPM %>%
+  tk_time_series_cv_plan() %>%
+  plot_time_series_cv_plan(date, value, .interactive = FALSE)
+### Machine Learning Models###
+recipe_specPM <- recipe(value ~ date, training(splitsPM)) %>%
+  step_timeseries_signature(date) %>%
+  step_rm(contains("am.pm"), contains("hour"), contains("minute"),
+          contains("second"), contains("xts")) %>%
+  step_fourier(date, period = 365, K = 5) %>%
+  step_dummy(all_nominal())
+
+recipe_specPM %>% prep() %>% juice()
+##Elastic Net###
+model_spec_glmnetPM <- linear_reg(penalty = 0.01, mixture = 0.5) %>%
+  set_engine("glmnet")
+
+workflow_fit_glmnetPM <- workflow() %>%
+  add_model(model_spec_glmnetPM) %>%
+  add_recipe(recipe_specPM %>% step_rm(date)) %>%
+  fit(training(splitsPM))
+
+##Modeltime Table###
+model_tablePM <- modeltime_table(
+  workflow_fit_glmnetPM
+)
+
+calibration_tablePM <- model_tablePM %>%
+  modeltime_calibrate(testing(splitsPM))
+
+calibration_tablePM %>%
+  modeltime_forecast(actual_data =PnM) %>%
+  plot_modeltime_forecast(.interactive = FALSE)
+
+
+calibration_tablePM %>%
+  modeltime_accuracy() %>%
+  table_modeltime_accuracy(.interactive = FALSE)
+#####
+ ojoPM <- calibration_tablePM %>%
+  # Remove ARIMA model with low accuracy
+  filter(.model_id == 1 ) %>%
+
+  # Refit and Forecast Forward
+  modeltime_refit(PnM) %>%
+  modeltime_forecast(h = input$hP, actual_data = PnM) %>%
+  plot_modeltime_forecast(.interactive = FALSE,.legend_show = F,
+                          .title=str_glue('Potencia Máxima de {input$EntradaP} dentro de {input$hP}'), .y_lab='Amperios (A)')
+ojoPM
+
+})
+```
+
+ Column  {.tabset}
+-------------------------------------  
+### Promedio
+```{r}
+renderDataTable({
+   ##Pronostico####
+Pn <- Potencia %>%
+  select(Fecha,input$EntradaP) %>% 
+  filter(between(Fecha,'2022-05-31','2022-09-12')) %>% 
+  set_names(c("date", "value"))
+Pn$date <- as.Date(Pn$date,format="%d/%m/%Y")
+
+Pn %>% 
+  plot_time_series(date,value, .interactive=TRUE)
+
+splitsP <- Pn %>%
+  time_series_split(assess = "3 months",cumulative = TRUE)
+
+
+splitsP %>%
+  tk_time_series_cv_plan() %>%
+  plot_time_series_cv_plan(date, value, .interactive = FALSE)
+
+### Machine Learning Models###
+recipe_specP <- recipe(value ~ date, training(splitsP)) %>%
+  step_timeseries_signature(date) %>%
+  step_rm(contains("am.pm"), contains("hour"), contains("minute"),
+          contains("second"), contains("xts")) %>%
+  step_fourier(date, period = 365, K = 5) %>%
+  step_dummy(all_nominal())
+
+recipe_specP %>% prep() %>% juice()
+##Elastic Net###
+model_spec_glmnetP <- linear_reg(penalty = 0.01, mixture = 0.5) %>%
+  set_engine("glmnet")
+
+workflow_fit_glmnetP <- workflow() %>%
+  add_model(model_spec_glmnetP) %>%
+  add_recipe(recipe_specP %>% step_rm(date)) %>%
+  fit(training(splitsP))
+
+
+
+
+
+##Modeltime Table###
+model_tableP <- modeltime_table(
+  workflow_fit_glmnetP
+) 
+
+calibration_tableP <- model_tableP %>%
+  modeltime_calibrate(testing(splitsP))
+
+calibration_tableP %>%
+  modeltime_forecast(actual_data = Pn) %>%
+  plot_modeltime_forecast(.interactive = FALSE)
+
+
+calibration_tableP %>%
+  modeltime_accuracy() %>%
+  table_modeltime_accuracy(.interactive = FALSE)
+#####
+ojoP <- calibration_tableP %>%
+  # Remove ARIMA model with low accuracy
+  filter(.model_id == 1 ) %>%
+  
+  # Refit and Forecast Forward
+  modeltime_refit(Pn) %>%
+  modeltime_forecast(h = input$hP, actual_data = Pn) %>%
+  plot_modeltime_forecast(.interactive = FALSE,.legend_show = F)
+
+datosPP <- ojoP$data %>% 
+  select(.index,.value,.conf_lo,.conf_hi)
+
+datatable(datosPP,rownames = FALSE,caption = str_glue('Datos de la Potencia Promedio  de {input$EntradaP} ' ),
+    extensions = c('Buttons'),
+    options = list(
+      pageLength = nrow(datosPP),
+      dom = 'Btip',
+      buttons = c('excel','csv','pdf','copy','print'),
+      scrollX = TRUE
+    ))
+
+
+})
+```
+
+
+### Máxima
+```{r}
+renderDataTable({
+    ##Pronostico####
+PnM <- PotenciaM %>%
+  select(Fecha,input$EntradaP) %>% 
+  filter(between(Fecha,'2022-05-31','2022-09-12')) %>% 
+  set_names(c("date", "value"))
+PnM$date <- as.Date(PnM$date,format="%d/%m/%Y")
+
+PnM %>% 
+  plot_time_series(date,value, .interactive=TRUE)
+
+splitsPM <- PnM %>%
+  time_series_split(assess = "2 months",cumulative = TRUE)
+
+
+splitsPM %>%
+  tk_time_series_cv_plan() %>%
+  plot_time_series_cv_plan(date, value, .interactive = FALSE)
+
+### Machine Learning Models###
+recipe_specPM <- recipe(value ~ date, training(splitsPM)) %>%
+  step_timeseries_signature(date) %>%
+  step_rm(contains("am.pm"), contains("hour"), contains("minute"),
+          contains("second"), contains("xts")) %>%
+  step_fourier(date, period = 365, K = 5) %>%
+  step_dummy(all_nominal())
+
+recipe_specPM %>% prep() %>% juice()
+##Elastic Net###
+model_spec_glmnetPM <- linear_reg(penalty = 0.01, mixture = 0.5) %>%
+  set_engine("glmnet",nlambda=5)
+
+workflow_fit_glmnetPM <- workflow() %>%
+  add_model(model_spec_glmnetPM) %>%
+  add_recipe(recipe_specPM %>% step_rm(date)) %>%
+  fit(training(splitsPM))
+
+##Modeltime Table###
+model_tablePM <- modeltime_table(
+  workflow_fit_glmnetPM
+) 
+
+calibration_tablePM <- model_tablePM %>%
+  modeltime_calibrate(testing(splitsPM))
+
+calibration_tablePM %>%
+  modeltime_forecast(actual_data = PnM, conf_interval = 0.90) %>%
+  plot_modeltime_forecast(.interactive = FALSE)
+
+
+calibration_tablePM %>%
+  modeltime_accuracy() %>%
+  table_modeltime_accuracy(.interactive = FALSE)
+#####
+ojoPM <- calibration_tablePM %>%
+  # Remove ARIMA model with low accuracy
+  filter(.model_id == 1 ) %>%
+  # Refit and Forecast Forward
+  modeltime_refit(PnM) %>%
+  modeltime_forecast(h = input$hP, actual_data = PnM) %>%
+  plot_modeltime_forecast(.interactive = FALSE,.legend_show = F)
+  
+datosPP1 <- ojoPM$data %>% 
+  select(.index,.value,.conf_lo,.conf_hi)
+
+datatable(datosPP1,rownames = FALSE,caption = str_glue('Datos de la Potencia Máxima  de {input$EntradaP} ' ),
+    extensions = c('Buttons'),
+    options = list(
+      pageLength = nrow(datosPP1),
+      dom = 'Btip',
+      buttons = c('excel','csv','pdf','copy','print'),
+      scrollX = TRUE
+    ))
+
+})
+```
