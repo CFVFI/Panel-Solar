@@ -131,16 +131,101 @@ Column {.tabset}
 -------------------------------------
    
 ### Historia
-Un calentador solar de agua usa la energía del sol para calentar un líquido, el cual transfiere el calor hacia un depósito acumulador de calor. Estos equipos pueden ser principalmente de dos tipos, los colectores solares, que son equipos donde el agua circula a través de ellos para su calentamiento, pero esta no es almacenada en el calentador solar. Muchas veces en estos sistemas se instala un tanque en el interior del hogar o industria para el almacenamiento del agua caliente. El otro tipo son los termo solares, también llamados calefones solares o termotanques solares. En estos equipos el agua también es almacenada para poder ser utilizada por ejemplo por la noche cuando no se dispone de la energía solar.Es una manera simple y efectiva de aprovechar la energía solar.
+El Sistema SolFocus SF-1100S utiliza un sistema fotovoltaico basado en Concentradores Fotovoltaicos (CPV) de alta eficiencia. Se utiliza un sistema óptico el cual recoge la luz solar y lo enfoca 650 veces en cada una de las pequeñas celdas. Por el diseño del SolFocus CPV logra altos niveles de producción de Energía utilizando materiales como vidrio y aluminio, los cuales son de bajos costo y duraderos. Esto proporciona un alto rendimiento energético utilizando una pequeña cantidad de celdas fotovoltaicas. 
+Por otra parte, los sistemas CPV de SolFocus son rentables, fiables, escalables; disminuyendo así el impacto en el medio ambiente.
+<div>
+<p style = 'text-align:center;'>
+<img src="www/Panel.png" alt="JuveYell" width="500px">
+</p>
+</div>
+
+#### Ventajas
+**Alto Rendiciento en altas temperaturas**
+
+- En comparacion con la energía fotovoltaica de silicio y sus peliculas delgadas donde el rendimiento puede degradarse más del 20%, la degradicón de la energía en los CPV bajo altas temperaturas en considerablemente menor. 
+
+**Producción de Energía Constante**
+
+- Gracias al sistema de seguimiente de doble eje que proporciona una curva de generación amplia de energia desde el amanecer hasta la puesta del sol.
+
+- Alta adaptabilidad a los horarios de máxima demanda.
+
+**Alto Rendimiento Energetico**
+
+- A diferencia de los sistemas fijo, el doble eje permite generar hasta un 30% más de energía.
+
+**Poco impacto Ambiental**
+
+- Su alta eficiencia optimiza el uso del sulelo.
+- Minimal disruption/coverage of land along with dual use.
+- Un 97% de3 reciclabilidad.
+
+**Bajo costo de Electricidad**
+
+- Costo de fabricación abaratado debido al aumento del volumen y eficiencia de fabricación.
+
+**Sistemas probados y confiables**
+
+- Certificados de confiabilidad, renidimiento y seguridad según IEC 62108.
+
+- Más de 250 millos de celdas bajo la luz del sol.
+
+**Amplia accesibilidad y destribución a escala de sercios públicos**
+
+- De 1 Mw hasta más de 100 Mw.
+
+- Flexibilidad en lugar de ubicación.
 
 
-```{r}
-```   
+#### Inversor Trifásico
+<div class="container">
+<p>
+<img src="www/Trifasico.png" style=" float: left;" width="500px">
+El inversor trifásico Sunny Tripower gracias a la tecnología Optiflex y a las dos entradas del punto de máxima potencia (MPP) y el amplio rango de tensión de entrada. Cumple con todos los requisitos de preparación de tensión reactiva y apoyo de red, y contribuye de forma fiable a la gestión de red. El sistema de seguridad Optiprotect con detección de fallos de string autodidacta, el fusible string electrónico y el descargador de sobretensión de CC tipo II permiten la mayor disponibilidad.
+</p>
+</div>
+
+
+
+
  
+### Dimensiones
+<div>
+<p style = 'text-align:center;'>
+<img src="www/Dim1.png" alt="JuveYell" width="900px">
+</p>
+</div>
+<div>
+<p style = 'text-align:center;'>
+<img src="www/Dim2.png" alt="JuveYell" width="900px">
+</p>
+</div>
+<div>
+<p style = 'text-align:center;'>
+<img src="www/Dim3.png" alt="JuveYell" width="900px">
+</p>
+</div>
+
 ### About us
-    
-```{r}
-```
+#### Fernando Maximiliano José María de Habsburgo-Lorena
+<div class="container">
+<p>
+<img src="www/perfil2.jpg" style=" float: left;">
+
+The SolFocus SF-1100S System is a high-efficiency photovoltaic system based on Concentrator Photovoltaic (CPV)
+technology. The optical system is used to collect sunlight and focus it at a concentration  level of 650 times onto the small cell area. In combination these features provide very high energy yield utilizing a
+very small amount of photovoltaic cell material.The SolFocus CPV design achieves high power production levels
+using durable low-cost materials like glass and aluminum. SolFocus CPV systems are cost-efficient, reliable, scalable, and provide a very favorable
+environmental footprint.
+
+The SolFocus SF-1100S System is a high-efficiency photovoltaic system based on Concentrator Photovoltaic (CPV)
+technology. The optical system is used to collect sunlight and focus it at a concentration  level of 650 times onto the small cell area. In combination these features provide very high energy yield utilizing a
+very small amount of photovoltaic cell material.The SolFocus CPV design achieves high power production levels
+using durable low-cost materials like glass and aluminum. SolFocus CPV systems are cost-efficient, reliable, scalable, and provide a very favorable
+environmental footprint.
+</p>
+</div>
+
 
 
 # Corriente Promedio {data-navmenu="Corriente" data-icon="fas fa-plug"}
